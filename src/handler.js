@@ -119,34 +119,23 @@ const getBookByIdHandler = (request, h) => {
     const bookIndex = books.find((b) => b.id === bookId);
 
     // jika ID tidak ditemukan
-    if (!bookIndex) {
+    if (bookIndex !== undefined) {
+      // menampilkan data buku secara detail sesuai ID tertentu
       const response = h.response({
-        status: 'fail',
-        message: 'Buku tidak ditemukan',
+        status: 'success',
+        data: {
+          book: bookIndex,
+        },
       });
-      response.code(404);
+      response.code(200);
       return response;
     }
 
-    // menampilkan data buku secara detail sesuai ID tertentu
     const response = h.response({
-      status: 'success',
-      data: {
-        id: books.id,
-        name: books.name,
-        year: books.year,
-        author: books.author,
-        summary: books.summary,
-        publisher: books.publisher,
-        pageCount: books.pageCount,
-        readPage: books.readPage,
-        finished: books.finished,
-        reading: books.reading,
-        insertedAt: books.insertedAt,
-        updatedAt: books.updatedAt,
-      },
+      status: 'fail',
+      message: 'Buku tidak ditemukan',
     });
-    response.code(200);
+    response.code(404);
     return response;
   } catch (error) {
     console.error(error);
@@ -172,9 +161,9 @@ const editBookByIdHandler = (request, h) => {
       publisher,
       pageCount,
       readPage,
-      finished,
+      // finished,
       reading,
-      insertedAt,
+      // insertedAt,
     //   updatedAt,
     } = request.payload;
 
@@ -223,15 +212,18 @@ const editBookByIdHandler = (request, h) => {
       publisher,
       pageCount,
       readPage,
-      finished,
+      // finished,
       reading,
-      insertedAt,
+      // insertedAt,
       updatedAt,
     };
 
     const response = h.response({
       status: 'success',
       message: 'Buku berhasil diperbarui',
+      data: {
+        book: books[bookIndex],
+      },
     });
     response.code(200);
     return response;
